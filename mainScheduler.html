@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Scheduler</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 500px; margin: auto; }
+        input, button { margin: 5px; padding: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ride Scheduler</h2>
+        <label>Date: <input type="date" id="rideDate"></label><br>
+        <label>Time: <input type="time" id="rideTime"></label><br>
+        <label>Destination: <input type="text" id="rideDestination"></label><br>
+        <button onclick="addRide()">Add Ride</button>
+        
+        <h3>Scheduled Rides</h3>
+        <ul id="rideList"></ul>
+        
+        <h3>Search Rides</h3>
+        <label>Time: <input type="time" id="searchTime"></label>
+        <button onclick="searchRides()">Search</button>
+        <ul id="searchResults"></ul>
+    </div>
+
+    <script>
+        let rides = [];
+
+        function addRide() {
+            const date = document.getElementById("rideDate").value;
+            const time = document.getElementById("rideTime").value;
+            const destination = document.getElementById("rideDestination").value;
+            
+            if (!date || !time || !destination) {
+                alert("Please fill all fields.");
+                return;
+            }
+
+            rides.push({ date, time, destination });
+            displayRides();
+        }
+
+        function displayRides() {
+            const list = document.getElementById("rideList");
+            list.innerHTML = "";
+            rides.forEach((ride, index) => {
+                list.innerHTML += `<li>${ride.date} ${ride.time} - ${ride.destination}</li>`;
+            });
+        }
+
+        function searchRides() {
+            const searchTime = document.getElementById("searchTime").value;
+            const results = document.getElementById("searchResults");
+            results.innerHTML = "";
+            
+            const found = rides.filter(ride => ride.time === searchTime);
+            found.forEach(ride => {
+                results.innerHTML += `<li>${ride.date} ${ride.time} - ${ride.destination}</li>`;
+            });
+
+            if (found.length === 0) {
+                results.innerHTML = "<li>No rides found</li>";
+            }
+        }
+    </script>
+</body>
+</html>
